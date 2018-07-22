@@ -8,7 +8,7 @@ import node.*;
 public abstract class Link {
 
 	private int delay, MTU; 
-	private Node dest;
+	protected Node dest;
 	
 	public abstract void send(Packet packet, Node from, Node to);
 	public abstract void receive(Node to, Node from);

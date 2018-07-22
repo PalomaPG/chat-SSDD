@@ -1,11 +1,12 @@
 package link;
 
-import frame.Packet;
 import node.*;
+import frame.Packet;
+import node.Node;
 
-public class Router2Client extends Link {
+public class Client2Router extends Link {
 
-	public Router2Client(Client dest) {
+	public Client2Router(Router dest) {
 		super(1, 512, dest);
 		// TODO Auto-generated constructor stub
 	}
@@ -26,10 +27,10 @@ public class Router2Client extends Link {
 	public boolean equals(Object o) {
 		if(o == null) return false;
 		if(o == this) return true;
-		if (!(o instanceof Router2Client)) return false;
+		if (!(o instanceof Client2Router)) return false;
 		else {
-			Router2Client r2c = (Router2Client)o;
-			if(r2c.getDelay()==1 && r2c.getMTU()==512 && (r2c.get_dest()).equals(dest)) 
+			Client2Router c2r = (Client2Router)o;
+			if(c2r.getDelay()==1 && c2r.getMTU()==512 && (c2r.get_dest()).equals(dest)) 
 				return true;
 			else return false;
 		}

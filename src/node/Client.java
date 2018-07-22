@@ -5,7 +5,7 @@ import link.*;
 
 public class Client extends Node {
 
-	private Link link;
+	private Client2Router link;
 	
 	public Client(String name, String ip) {
 		super(name, ip);
@@ -15,7 +15,9 @@ public class Client extends Node {
 	@Override
 	public void connect(Node node) {
 		// TODO Auto-generated method stub
-
+		link = new Client2Router((Router)node);
+		Router r = (Router)node;
+		if(!(r.getLink_table().containsKey(this.getIP()))) node.connect(this);
 	}
 
 	@Override
@@ -34,6 +36,16 @@ public class Client extends Node {
 	public void disconnect(Node node) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Client2Router getLink() {
+		// TODO Auto-generated method stub
+		return link;
+	}
+
+	public String getRouterIP() {
+		// TODO Auto-generated method stub
+		return link.get_dest().getIP();
 	}
 
 }
