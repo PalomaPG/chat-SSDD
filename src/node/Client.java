@@ -21,7 +21,7 @@ public class Client extends Node {
 	}
 
 	@Override
-	public void send(Packet packet) {
+	public void send(Frame frame) {
 		// TODO Auto-generated method stub
 
 	}

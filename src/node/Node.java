@@ -1,6 +1,6 @@
 package node;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import frame.*;
 
@@ -9,19 +9,19 @@ import java.util.ArrayList;
 public abstract class Node {
 
 	private String name, IP;
-	private Hashtable<String, ArrayList<Packet>> packets;
+	private HashMap<String, ArrayList<Message>> packets;
 	
 	/*Abstract methods*/
 	public abstract void disconnect(Node node);
 	public abstract void connect(Node node);
-	public abstract void send(Packet packet);
+	public abstract void send(Frame frame);
 	public abstract void receive();
 	
 	/*Constructor and other methods*/
 	public Node(String name, String ip) {
 		this.setName(name);
 		this.setIP(ip);
-		this.setPackets(new Hashtable<String, ArrayList<Packet>>());
+		this.setPackets(new HashMap<String, ArrayList<Message>>());
 	}
 	
 
@@ -43,11 +43,11 @@ public abstract class Node {
 		IP = iP;
 	}
 
-	public Hashtable<String, ArrayList<Packet>> getPackets() {
+	public HashMap<String, ArrayList<Message>> getPackets() {
 		return packets;
 	}
 
-	public void setPackets(Hashtable<String, ArrayList<Packet>> packets) {
+	public void setPackets(HashMap<String, ArrayList<Message>> packets) {
 		this.packets = packets;
 	}
 	

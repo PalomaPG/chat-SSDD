@@ -1,8 +1,7 @@
 package link;
 
 import node.*;
-import frame.Packet;
-import node.Node;
+import frame.*;
 
 public class Client2Router extends Link {
 
@@ -12,7 +11,7 @@ public class Client2Router extends Link {
 	}
 
 	@Override
-	public void send(Packet packet, Node from, Node to) {
+	public void send(Frame frame, Node from, Node to) {
 		// TODO Auto-generated method stub
 
 	}

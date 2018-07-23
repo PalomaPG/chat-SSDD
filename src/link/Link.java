@@ -10,7 +10,7 @@ public abstract class Link {
 	private int delay, MTU; 
 	protected Node dest;
 	
-	public abstract void send(Packet packet, Node from, Node to);
+	public abstract void send(Frame frame, Node from, Node to);
 	public abstract void receive(Node to, Node from);
 	
 	public Link(int delay, int MTU, Node dest) {
@@ -19,8 +19,8 @@ public abstract class Link {
 		this.set_dest(dest);
 	}
 	
-	public ArrayList<Packet>shater_packet(Packet packet){
-		ArrayList<Packet> packets = new ArrayList<Packet>();
+	public ArrayList<Message>shater_packet(Message packet){
+		ArrayList<Message> packets = new ArrayList<Message>();
 		return packets;
 	}
 	

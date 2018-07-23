@@ -3,11 +3,12 @@ package chat;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test; 
 
+import frame.*;
 import node.*;
 import link.*;
 
@@ -46,6 +47,7 @@ public class ConnectionTests {
 	@Test
 	public void basic_connection() {
 		
+		/*Client- router -router - client*/
 		assertTrue(((Router)router1).getRoute_table().isEmpty());
 		assertTrue(router2.getRoute_table().isEmpty());
 		assertTrue(((Router)router1).getLink_table().isEmpty());
@@ -58,13 +60,12 @@ public class ConnectionTests {
 		assertTrue(((Client)client1).getRouterIP().equals(router1.getIP()));
 		//Verify router1 route_table
 		Router2Client r2c_1 = new Router2Client((Client) client1);
-		Hashtable<String, ArrayList<String>> rt_1 = ((Router)router1).getRoute_table();
+		HashMap<String, ArrayList<String>> rt_1 = ((Router)router1).getRoute_table();
 		assertFalse(rt_1.isEmpty());
-		Hashtable<String, ArrayList<Link>> lt_1 =  ((Router)router1).getLink_table();
+		HashMap<String, Link> lt_1 =  ((Router)router1).getLink_table();
 		assertFalse(lt_1.isEmpty());
 		assertTrue((rt_1.get(client1.getIP()).contains(router1.getIP())));
-		assertTrue(lt_1.get(client1.getIP()).size()>0);
-		Router2Client r2c = (Router2Client)lt_1.get(client1.getIP()).get(0);
+		Router2Client r2c = (Router2Client)lt_1.get(client1.getIP());
 		assertTrue(r2c.equals(r2c_1));
 		
 		/***ROUTER-CLIENT***/
@@ -75,23 +76,35 @@ public class ConnectionTests {
 		assertTrue((client2).getRouterIP().equals(router2.getIP()));
 		//Verify router2 route_table
 		Router2Client r2c_2 = new Router2Client(client2);
-		Hashtable<String, ArrayList<String>> rt_2 = (router2).getRoute_table();
+		HashMap<String, ArrayList<String>> rt_2 = (router2).getRoute_table();
 		assertFalse(rt_2.isEmpty());
-		Hashtable<String, ArrayList<Link>> lt_2 =  (router2).getLink_table();
+		HashMap<String, Link> lt_2 =  (router2).getLink_table();
 		assertFalse(lt_2.isEmpty());
 		assertTrue((rt_2.get(client2.getIP()).contains(router2.getIP())));
-		assertTrue(lt_2.get(client2.getIP()).size()>0);
-		r2c = (Router2Client)lt_2.get(client2.getIP()).get(0);
+		r2c = (Router2Client)lt_2.get(client2.getIP());
 		assertTrue(r2c.equals(r2c_2));
 		
-		/*Router -Router*/
-		router1.connect(router2);
+		/***ROUTER-ROUTER***/
+		
+		((Router)router1).connect(router2);
+		Router2Router r2r_1 = new Router2Router(0,0, router2);
+		Router2Router r2r_2 = new Router2Router(0,0, router1);
+		lt_1=((Router)router1).getLink_table();
+		lt_2=router2.getLink_table();
+		assertTrue(lt_1.containsKey(router2.getIP()));
+		assertTrue(lt_2.containsKey(router1.getIP()));
+		
+		/*Sharing route table*/
+		SharingTable st_21 = new SharingTable(router2.getIP(), router1.getIP(), client2.getIP(), router2.getIP());
+		SharingTable st_12 = new SharingTable(router1.getIP(), router2.getIP(), client1.getIP(), router1.getIP());
+		router2.share_table(st_21);
+		((Router)router1).share_table(st_12);
 
 	}
 	
 	@Test
 	public void advanced_connection() {
-		/*Client-router-client*/
+		/*Check route tables*/
 
 		/*Client-router-router/router- router-client*/
 	}
