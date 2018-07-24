@@ -11,13 +11,13 @@ public class Client2Router extends Link {
 	}
 
 	@Override
-	public void send(Frame frame, Node from, Node to) {
+	public void send(Frame frame) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void receive(Node to, Node from) {
+	public void receive(String to, String from) {
 		// TODO Auto-generated method stub
 
 	}

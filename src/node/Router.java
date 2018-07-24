@@ -67,12 +67,45 @@ public class Router extends Node {
 	@Override
 	public void send(Frame frame) {
 		// TODO Auto-generated method stub
-		
+		String dest_IP = frame.getIP_dest();
+		Link link = this.link_table.get(dest_IP);
+		if(link!=null) {
+			link.send(frame);
+		}
+		else {
+			/*Check route table*/
+		}
 	}
 
 	@Override
 	public void receive() {
 		// TODO Auto-generated method stub
+		ArrayList<Frame> frames = this.getFrames();
+		while(frames.size()>0) {
+			Frame frame = frames.remove(0);
+			if(frame instanceof SharingTable) {
+				HashMap<String, String> content =(HashMap<String, String>) ((SharingTable) frame).getContent();
+				for(String key: content.keySet()) {
+					if (!(this.route_table.containsKey(key))) {
+						ArrayList<String> lst = new ArrayList<String>();
+						lst.add(content.get(key));
+						this.route_table.put(key,lst);
+					}
+					else {
+						ArrayList<String> lst = this.route_table.get(key);
+						if(lst.contains(content.get(key))) return;
+						else {
+							lst.add(content.get(key));
+							this.route_table.put(key, lst);
+						}
+					}
+				}
+			}
+			else {
+				
+			}
+				
+		}
 		
 	}
 
@@ -111,8 +144,24 @@ public class Router extends Node {
 		this.link_table = link_table;
 	}
 
-	public void share_table(SharingTable st_21) {
+
+
+	public void share_route_table(SharingTable st) {
 		// TODO Auto-generated method stub
+		Router2Router link = (Router2Router)this.link_table.get(st.getIP_dest());
+		
+		if (link!=null) {
+			link.send(st);
+		}
+		else {
+			for (String key: this.link_table.keySet()) {
+				
+				Link aux_link = this.link_table.get(key);
+				if(aux_link instanceof Router2Router) {
+					aux_link.send(st);
+				}
+			}
+		}
 		
 	}
 

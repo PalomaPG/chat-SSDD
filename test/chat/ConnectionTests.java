@@ -97,9 +97,16 @@ public class ConnectionTests {
 		/*Sharing route table*/
 		SharingTable st_21 = new SharingTable(router2.getIP(), router1.getIP(), client2.getIP(), router2.getIP());
 		SharingTable st_12 = new SharingTable(router1.getIP(), router2.getIP(), client1.getIP(), router1.getIP());
-		router2.share_table(st_21);
-		((Router)router1).share_table(st_12);
-
+		router2.share_route_table(st_21);
+		((Router)router1).share_route_table(st_12);
+		assertTrue(router2.getFrames().size()>0);
+		assertTrue(router1.getFrames().size()>0);
+		router2.receive();
+		((Router)router1).receive();
+		assertTrue(router2.getRoute_table().size()>1);
+		System.out.println(router2.getRoute_table());
+		assertTrue(((Router)router1).getRoute_table().size()>1);
+		System.out.println(((Router)router1).getRoute_table());
 	}
 	
 	@Test

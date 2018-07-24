@@ -1,15 +1,15 @@
 package node;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import frame.*;
 
-import java.util.ArrayList;
 
 public abstract class Node {
 
 	private String name, IP;
-	private HashMap<String, ArrayList<Message>> packets;
+	private ArrayList<Frame> frames;
 	
 	/*Abstract methods*/
 	public abstract void disconnect(Node node);
@@ -21,10 +21,8 @@ public abstract class Node {
 	public Node(String name, String ip) {
 		this.setName(name);
 		this.setIP(ip);
-		this.setPackets(new HashMap<String, ArrayList<Message>>());
+		this.setFrames(new ArrayList<Frame>());
 	}
-	
-
 	
 	/*Getters and setters*/
 	public String getName() {
@@ -43,12 +41,16 @@ public abstract class Node {
 		IP = iP;
 	}
 
-	public HashMap<String, ArrayList<Message>> getPackets() {
-		return packets;
+	public ArrayList<Frame> getFrames() {
+		return frames;
 	}
 
-	public void setPackets(HashMap<String, ArrayList<Message>> packets) {
-		this.packets = packets;
+	public void setFrames(ArrayList<Frame> frames) {
+		this.frames = frames;
+	}
+	public void enqueue_frame(Frame frame) {
+		// TODO Auto-generated method stub
+		frames.add(frame);
 	}
 	
 }

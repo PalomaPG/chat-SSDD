@@ -10,8 +10,8 @@ public abstract class Link {
 	private int delay, MTU; 
 	protected Node dest;
 	
-	public abstract void send(Frame frame, Node from, Node to);
-	public abstract void receive(Node to, Node from);
+	public abstract void send(Frame frame);
+	public abstract void receive(String to, String from);
 	
 	public Link(int delay, int MTU, Node dest) {
 		this.setDelay(delay);
