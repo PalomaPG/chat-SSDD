@@ -27,6 +27,8 @@ public class ConnectionTests {
 		client2 = new Client("client2", "123.123.123.123:2321");
 		router1 = new Router("R1", "123.123.123.121:1540");
 		router2 = new Router("R2", "123.123.123.122:2320");
+		router3 = new Router("R3", "123.123.123.122:2321");
+		router4 = new Router("R4", "123.123.123.122:2324");
 	}
 	
 	@Test
@@ -103,17 +105,92 @@ public class ConnectionTests {
 		assertTrue(router1.getFrames().size()>0);
 		router2.receive();
 		((Router)router1).receive();
-		assertTrue(router2.getRoute_table().size()>1);
-		System.out.println(router2.getRoute_table());
+		assertTrue(router2.getRoute_table().size()>1);		
 		assertTrue(((Router)router1).getRoute_table().size()>1);
-		System.out.println(((Router)router1).getRoute_table());
+		
+		
 	}
 	
 	@Test
 	public void advanced_connection() {
-		/*Check route tables*/
 
-		/*Client-router-router/router- router-client*/
+		/*client1-router1-router3/router4- router2-client2*/
+		client1.connect((Router) router1);
+		client2.connect(router2);
+		((Router)router1).connect(router3);
+		((Router)router1).connect(router4);		
+		router2.connect(router3);
+		router2.connect(router4);
+		
+		Client2Router link1 = new Client2Router((Router) router1);
+		assertTrue(((Client)client1).getLink().equals(link1));
+
+		Client2Router link2 = new Client2Router(router2);
+		assertTrue(client2.getLink().equals(link2));
+		
+		/*Check routers link lists */
+		HashMap<String, Link> lst1 = ((Router)router1).getLink_table();
+		
+		
+		{
+			assertTrue(lst1.containsKey(client1.getIP()));
+			assertTrue(lst1.containsKey(router3.getIP()));
+			assertTrue(lst1.containsKey(router4.getIP()));
+			
+		}
+		
+		HashMap<String, Link> lst2 = router2.getLink_table();
+		
+		{
+			assertTrue(lst2.containsKey(client2.getIP()));
+			assertTrue(lst2.containsKey(router3.getIP()));
+			assertTrue(lst2.containsKey(router4.getIP()));
+			
+		}
+		
+		assertEquals(lst1.size(),3);
+		assertEquals(lst2.size(),3);
+		
+		HashMap<String, Link> lst3 = router3.getLink_table();
+		
+		{
+			assertTrue(lst3.containsKey(router2.getIP()));
+			assertTrue(lst3.containsKey(router1.getIP()));
+		}
+		HashMap<String, Link> lst4 = router4.getLink_table();
+		
+		{
+			assertTrue(lst4.containsKey(router2.getIP()));
+			assertTrue(lst4.containsKey(router1.getIP()));
+		}
+		
+		assertEquals(lst3.size(),2);
+		assertEquals(lst4.size(),2);
+		
+		/*Check route tables*/
+		HashMap <String, ArrayList<String>> rt1 = ((Router) router1).getRoute_table();
+		HashMap <String, ArrayList<String>> rt2 = router2.getRoute_table();
+		HashMap <String, ArrayList<String>> rt3 = router3.getRoute_table();
+		HashMap <String, ArrayList<String>> rt4 = router4.getRoute_table();
+		
+		assertEquals(rt1.size(), 1);
+		assertEquals(rt2.size(), 1);
+		assertEquals(rt3.size(), 0);
+		assertEquals(rt4.size(), 0);
+		
+		((Router) router1).share_route_table(router3.getIP(), router1.getIP(), client1.getIP());
+		router2.share_route_table(router3.getIP(), router2.getIP(), client2.getIP());
+		rt3 = router3.getRoute_table();
+		router3.receive();
+		assertEquals(rt3.size(), 2);
+		//assertTrue(router1.getFrames().size()>0);
+		
+		((Router) router1).share_route_table(router4.getIP(), router1.getIP(), client1.getIP());
+		router2.share_route_table(router4.getIP(), router2.getIP(), client2.getIP());
+		rt4 = router4.getRoute_table();
+		router4.receive();
+		assertEquals(rt4.size(), 2);
+
 	}
 	
 	

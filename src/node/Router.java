@@ -56,7 +56,6 @@ public class Router extends Node {
 			}
 			else {
 				Router2Router link = new Router2Router(0,0, (Router)node);
-				System.err.println(link_table.size());
 				link_table.put(node.getIP(), link);
 				node.connect(this);
 				
@@ -101,7 +100,7 @@ public class Router extends Node {
 					}
 				}
 			}
-			else {
+			else {/*Si es un mensaje*/
 				
 			}
 				
@@ -145,7 +144,12 @@ public class Router extends Node {
 	}
 
 
-
+	public void share_route_table(String dest_IP, String from, String to) {
+		
+		SharingTable st = new SharingTable(this.getIP(), dest_IP, to, from);
+		share_route_table(st);
+	}
+	
 	public void share_route_table(SharingTable st) {
 		// TODO Auto-generated method stub
 		Router2Router link = (Router2Router)this.link_table.get(st.getIP_dest());
