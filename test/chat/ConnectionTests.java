@@ -180,15 +180,30 @@ public class ConnectionTests {
 		
 		((Router) router1).share_route_table(router3.getIP(), router1.getIP(), client1.getIP());
 		router2.share_route_table(router3.getIP(), router2.getIP(), client2.getIP());
-		rt3 = router3.getRoute_table();
-		router3.receive();
-		assertEquals(rt3.size(), 2);
-		//assertTrue(router1.getFrames().size()>0);
-		
 		((Router) router1).share_route_table(router4.getIP(), router1.getIP(), client1.getIP());
 		router2.share_route_table(router4.getIP(), router2.getIP(), client2.getIP());
-		rt4 = router4.getRoute_table();
+
+		router2.share_route_table(router1.getIP(), router4.getIP(), client2.getIP());
+		router2.share_route_table(router1.getIP(), router3.getIP(), client2.getIP());
+		
+		((Router)router1).share_route_table(router2.getIP(), router3.getIP(), client1.getIP());
+		((Router)router1).share_route_table(router2.getIP(), router4.getIP(), client1.getIP());
+
+
+
+		((Router)router1).receive();
+		router2.receive();
+		router3.receive();
 		router4.receive();
+		
+		rt1 = ((Router) router1).getRoute_table();
+		rt2 = router2.getRoute_table();
+		rt3 = router3.getRoute_table();
+		rt4 = router4.getRoute_table();
+
+		assertEquals(rt1.get(client2.getIP()).size(), 2);
+		assertEquals(rt2.get(client1.getIP()).size(), 2);
+		assertEquals(rt3.size(), 2);
 		assertEquals(rt4.size(), 2);
 
 	}

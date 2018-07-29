@@ -13,6 +13,8 @@ public class Router2Router extends Link {
 	@Override
 	public void send(Frame frame) {
 		// TODO Auto-generated method stub
+		
+
 		if((frame.getIP_dest()).equals(dest.getIP())) {
 			dest.enqueue_frame(frame);
 		}

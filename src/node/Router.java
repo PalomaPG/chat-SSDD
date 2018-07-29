@@ -92,11 +92,9 @@ public class Router extends Node {
 					}
 					else {
 						ArrayList<String> lst = this.route_table.get(key);
-						if(lst.contains(content.get(key))) return;
-						else {
-							lst.add(content.get(key));
-							this.route_table.put(key, lst);
-						}
+						String str = content.get(key);
+
+						if(!(lst.contains(str))) lst.add(str);
 					}
 				}
 			}
@@ -159,7 +157,6 @@ public class Router extends Node {
 		}
 		else {
 			for (String key: this.link_table.keySet()) {
-				
 				Link aux_link = this.link_table.get(key);
 				if(aux_link instanceof Router2Router) {
 					aux_link.send(st);
