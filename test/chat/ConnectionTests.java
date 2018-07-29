@@ -189,8 +189,6 @@ public class ConnectionTests {
 		((Router)router1).share_route_table(router2.getIP(), router3.getIP(), client1.getIP());
 		((Router)router1).share_route_table(router2.getIP(), router4.getIP(), client1.getIP());
 
-
-
 		((Router)router1).receive();
 		router2.receive();
 		router3.receive();

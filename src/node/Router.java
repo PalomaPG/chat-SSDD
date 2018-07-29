@@ -73,6 +73,14 @@ public class Router extends Node {
 		}
 		else {
 			/*Check route table*/
+			ArrayList<String> lst = this.route_table.get(dest_IP);
+			if(lst.size()>1) {
+				System.err.println("Round robin");
+			}
+			else {
+				(this.link_table.get(lst.get(0))).send(frame);;
+				
+			}
 		}
 	}
 
@@ -93,7 +101,6 @@ public class Router extends Node {
 					else {
 						ArrayList<String> lst = this.route_table.get(key);
 						String str = content.get(key);
-
 						if(!(lst.contains(str))) lst.add(str);
 					}
 				}

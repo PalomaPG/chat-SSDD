@@ -1,6 +1,9 @@
 package link;
 
 import node.*;
+
+import java.util.HashMap;
+
 import frame.*;
 
 public class Client2Router extends Link {
@@ -13,7 +16,8 @@ public class Client2Router extends Link {
 	@Override
 	public void send(Frame frame) {
 		// TODO Auto-generated method stub
-
+		((Router)dest).send(frame);
+		
 	}
 
 	@Override

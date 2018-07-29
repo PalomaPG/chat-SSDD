@@ -13,7 +13,7 @@ public class Router2Client extends Link {
 	@Override
 	public void send(Frame frame) {
 		// TODO Auto-generated method stub
-
+		dest.enqueue_frame(frame);
 	}
 
 	@Override

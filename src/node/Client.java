@@ -1,5 +1,7 @@
 package node;
 
+import java.util.ArrayList;
+
 import frame.*;
 import link.*;
 
@@ -20,16 +22,25 @@ public class Client extends Node {
 		if(!(r.getLink_table().containsKey(this.getIP()))) node.connect(this);
 	}
 
+	public void send(String dest_IP, String msg) {
+		Message m = new Message(this.getIP(), dest_IP, msg);
+		send(m);
+	}
 	@Override
 	public void send(Frame frame) {
 		// TODO Auto-generated method stub
-
+		link.send(frame);
 	}
 
 	@Override
 	public void receive() {
 		// TODO Auto-generated method stub
-
+		ArrayList<Frame> frames = this.getFrames();
+		while(frames.size()>0) {
+			Message  msg = (Message)frames.remove(0);
+			System.err.println((String)msg.getContent());
+			break;
+		}
 	}
 
 	@Override
